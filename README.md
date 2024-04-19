@@ -31,7 +31,7 @@ $ source ./venv_4_Bot/bin/activate
 (venv_4_Bot) $ python3 -m pip install watchdog
 ```
 ## bot.pyの編集
-用意する者
+用意するもの
 1. チャンネルのID
 2. Botのトークン
 3. マインクラフトのサーバーが生成する`latest.log`が保管されている絶対パス
