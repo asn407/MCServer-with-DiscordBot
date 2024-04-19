@@ -6,7 +6,7 @@ from discord.ext import tasks, commands
 from watchdog.observers.polling import PollingObserver
 from watchdog.events import FileSystemEventHandler
 
-CHANNEL_ID = 1234567890123 # CHANGE YOUR CHANNEL ID
+CHANNEL_ID = 1234567890123
 TOKEN = 'TOKEN IS HERE'
 WATCH_DIR = '/home/user/logs.txt'
 
