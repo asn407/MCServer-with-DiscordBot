@@ -8,18 +8,18 @@ from watchdog.events import FileSystemEventHandler
 
 CHANNEL_ID = 1234567890123
 TOKEN = 'TOKEN IS HERE'
-WATCH_DIR = '/home/user/logs.txt'
+WATCH_DIR = '/home/user/minecraft_server/logs/latest.log'
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 class Message:
-    def __init__(self, pattern, format_, color):
+    def __init__(self, pattern, self_format, color):
         self.pattern = pattern
-        self.format_ = format_
+        self.self_format = self_format
         self.color = color
         self.text = ''
 
-    def _time_(self):
+    def get_time(self):
         dt_time = datetime.datetime.now()
         dt_time = dt_time.strftime('[ %Y/%m/%d ] [ %H:%M:%S ]')
         return str(dt_time)
@@ -32,7 +32,7 @@ class MinecraftLogMonitor:
         self.message_list.append(Message(': (.*) left the game', '\n{0}', 0xff0000))
         self.message_list.append(Message(': (.*) has made the advancement (.*)', '\n{0} : {1}', 0x00aeef))
 
-    def _get_(self):
+    def find(self):
         with open(WATCH_DIR, 'r', errors='ignore') as f:
             f.seek(self.position)
             logs = f.readlines()
@@ -41,17 +41,17 @@ class MinecraftLogMonitor:
         for log in logs:
             for message in self.message_list:
                 if match := re.search(message.pattern, log):
-                    message.text = message.format_.format(*match.groups())
+                    message.text = message.self_format.format(*match.groups())
                     return message
 
         return None
 
-    async def _send_(self, message):
+    async def send(self, message):
         if message == None:
             return
         
         channel = bot.get_channel(CHANNEL_ID)
-        final_text = message._time_() + message.text
+        final_text = message.get_time() + message.text
         embed = discord.Embed(title=final_text, color=message.color)
 
         await channel.send(embed=embed)
@@ -61,14 +61,15 @@ class FileChangeHandler(FileSystemEventHandler):
         self.monitor = monitor
 
     def on_modified(self, event):
-        bot.loop.create_task(self.monitor._send_(self.monitor._get_()))
+        message = self.monitor.find()
+        bot.loop.create_task(self.monitor.send(message))
+
+@bot.event
+async def on_ready():
+    monitor = MinecraftLogMonitor()
+    observer = PollingObserver()
+    observer.schedule(FileChangeHandler(monitor), path=WATCH_DIR, recursive=True)
+    observer.start()
 
 if __name__ == '__main__':
-    @bot.event
-    async def on_ready():
-        monitor = MinecraftLogMonitor()
-        observer = PollingObserver()
-        observer.schedule(FileChangeHandler(monitor), path=WATCH_DIR, recursive=True)
-        observer.start()
-
     bot.run(TOKEN)
