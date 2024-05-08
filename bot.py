@@ -8,7 +8,7 @@ from watchdog.events import FileSystemEventHandler
 
 CHANNEL_ID = 1234567890123
 TOKEN = 'TOKEN IS HERE'
-WATCH_DIR = '/home/user/minecraft_server/logs/latest.log'
+WATCH_DIR = '/home/user/MCServer/logs/latest.log'
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
