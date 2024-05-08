@@ -13,9 +13,9 @@ WATCH_DIR = '/home/user/MCServer/logs/latest.log'
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 class Message:
-    def __init__(self, pattern, self_format, color):
+    def __init__(self, pattern, message_format, color):
         self.pattern = pattern
-        self.self_format = self_format
+        self.message_format = message_format
         self.color = color
         self.text = ''
 
@@ -41,7 +41,7 @@ class MinecraftLogMonitor:
         for log in logs:
             for message in self.message_list:
                 if match := re.search(message.pattern, log):
-                    message.text = message.self_format.format(*match.groups())
+                    message.text = message.message_format.format(*match.groups())
                     return message
 
         return None
