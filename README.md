@@ -53,4 +53,4 @@ $ source ./venv_4_Bot/bin/activate
 URL：（2024年6月上旬より販売開始予定）
 # Lisence
 
-This project is licensed under the MIT License, see the LICENSE for details.
+This project is licensed under the MIT License, see the LICENSE file for details.

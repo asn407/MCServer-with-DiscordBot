@@ -1,5 +1,5 @@
 # Copyright (c) 2024 asn407
-# This software is released under the MIT License, see LICENSE for details.
+# This file is licensed under the MIT License, see the LICENSE file for details.
 
 import re
 import time
