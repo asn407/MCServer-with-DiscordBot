@@ -1,3 +1,6 @@
+# Copyright (c) 2024 asn407
+# This software is released under the MIT License, see LICENSE.txt for details.
+
 import re
 import time
 import datetime
